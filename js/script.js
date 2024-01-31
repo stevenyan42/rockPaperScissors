@@ -1,5 +1,6 @@
 let playScore = 0;
 let comScore = 0;
+let winText = document.querySelector(".winner");
 
 function getComputerSel () {
     let num = Math.floor(Math.random()*3);
@@ -13,73 +14,55 @@ function getComputerSel () {
     }
 }
 
-function playRound(playSel, comSel){
+function playRound(playSel){
+
+    let comSel = getComputerSel();
 
     if ((playSel == "Rock" && comSel == "Scissor") || 
     (playSel == "Paper" && comSel == "Rock") || 
     (playSel == "Scissor" && comSel == "Paper")) {
-        console.log("You Win the Round! " + playSel + " beats " + comSel);
+        winText.textContent = "You Win the Round! " + playSel + " beats " + comSel;
         playScore++;
-        return
     } else if (playSel == comSel) {
-        console.log("Tie Round!");
-        return
+        winText.textContent = "Tie Round!";
     } else {
-        console.log("You Lose the Round! " + comSel + " beats " + playSel);
+        winText.textContent = "You Lose the Round! " + comSel + " beats " + playSel;
         comScore++;
-        return
-    }   
-}
-
-function getPlayerSel() {
-    let playerSel = prompt("Rock, Paper, or Scissor?");
-    return playerSel.charAt(0).toUpperCase() + playerSel.slice(1);
-}
-
-function game() {
-
-    //game 1
-    let comChoice = getComputerSel();
-    console.log(comChoice);
-    let playChoice = getPlayerSel();
-    console.log(playChoice)
-    playRound(playChoice, comChoice);
-    
-    //game 2
-    comChoice = getComputerSel();
-    console.log(comChoice);
-    playChoice = getPlayerSel();
-    console.log(playChoice)
-    playRound(playChoice, comChoice);
-
-    //game 3
-    comChoice = getComputerSel();
-    console.log(comChoice);
-    playChoice = getPlayerSel();
-    console.log(playChoice)
-    playRound(playChoice, comChoice);
-
-    //game 4
-    comChoice = getComputerSel();
-    console.log(comChoice);
-    playChoice = getPlayerSel();
-    console.log(playChoice)
-    playRound(playChoice, comChoice);
-
-    //game 5
-    comChoice = getComputerSel();
-    console.log(comChoice);
-    playChoice = getPlayerSel();
-    console.log(playChoice)
-    playRound(playChoice, comChoice);
-
-    if (playScore > comScore) {
-        console.log("You Win!")
-    } else if (comScore > playScore) {
-        console.log("You Lose!")
-    } else {
-        console.log("Tie Game!")
     }
 }
 
-game();
+function updateScore(){
+
+    let playScoreDisplay = document.querySelector(".player");
+    let comScoreDisplay = document.querySelector(".computer");
+    playScoreDisplay.textContent = "Player: " + playScore;
+    comScoreDisplay.textContent = "Computer: " + comScore;
+
+    if (playScore == 5){
+        winText.textContent = "Player Wins!"
+        return
+    }
+
+    if (comScore == 5){
+        winText.textContent = "Computer Wins!"
+        return
+    }
+
+}
+
+function buttonHandler(event) {
+    if (playScore == 5 || comScore == 5){
+        return;
+    }
+    playRound(event.target.value);
+    updateScore();
+
+}
+
+const rockButton = document.querySelector(".rock");
+const paperButton = document.querySelector(".paper");
+const scissorButton = document.querySelector(".scissor");
+
+rockButton.addEventListener("click", buttonHandler);
+paperButton.addEventListener("click", buttonHandler);
+scissorButton.addEventListener("click", buttonHandler);
